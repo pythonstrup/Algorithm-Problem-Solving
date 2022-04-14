@@ -80,3 +80,47 @@ print(solution([["yellowhat", "headgear"], ["bluesunglasses", "eyewear"],
                 ["green_turban", "headgear"], ["green_turban2", "headgear"],
                 ["bluesunglasses", "face"], ["smoky_makeup", "face"]]))
 print(solution([["crowmask", "face"], ["bluesunglasses", "face"], ["smoky_makeup", "face"]]))
+
+
+# 내 풀이
+def solution(clothes):
+    from collections import Counter
+    count = Counter(arr[1] for arr in clothes)
+    answer = 1
+
+    for key, value in count.items():
+        answer *= (value+1)
+
+    return answer - 1
+
+
+# 다른 사람 풀이
+def solution(clothes):
+    from collections import Counter
+    from functools import reduce
+    cnt = Counter([kind for name, kind in clothes])
+    answer = reduce(lambda x, y: x*(y+1), cnt.values(), 1) - 1
+    return answer
+
+
+# 다른 사람 풀이2
+# 해시를 사용한 정석 풀이처럼 보임
+def solution(clothes):
+    clothes_type = {}
+
+    for c, t in clothes:
+        if t not in clothes_type:
+            clothes_type[t] = 2
+        else:
+            clothes_type[t] += 1
+
+    cnt = 1
+    for num in clothes_type.values():
+        cnt *= num
+
+    return cnt - 1
+
+
+print(solution([["yellowhat", "headgear"], ["bluesunglasses", "eyewear"], ["green_turban", "headgear"]]))
+
+print(solution([["crowmask", "face"], ["bluesunglasses", "face"], ["smoky_makeup", "face"]]))
