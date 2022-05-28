@@ -1,15 +1,43 @@
-from collections import Counter
+from itertools import permutations
 
-def duplicated(arr):
-    count = Counter(arr)
-    answer = []
-    for key, value in count.items():
-        if value > 1:
-            answer.append(value)
+def operation(num1, num2, op):
+    if op == "+":
+        return str(int(num1) + int(num2))
+    elif op == "-":
+        return str(int(num1) - int(num2))
+    elif op == "*":
+        return str(int(num1) * int(num2))
 
-    return answer if answer else [-1]
+def calculate(exp, op):
+    array = []
+    tmp = ""
+    for i in exp:
+        if i.isdigit():
+            tmp += i
+        else:
+            array.append(tmp)
+            array.append(i)
+            tmp = ""
+    array.append(tmp)
 
+    for s in op:
+        stack = []
+        while len(array) != 0:
+            tmp = array.pop(0)
+            if tmp == s:
+                stack.append(operation(stack.pop(), array.pop(0), s))
+            else:
+                stack.append(tmp)
+        array = stack
 
-print(duplicated([1,2,3,3,3,3,4,4]))
-print(duplicated([3,5,7,9,1]))
-print(duplicated([3,2,4,4,2,5,2,5,5]))
+    return abs(int(array[0]))
+
+def solution(expression):
+    op = ["+", "-", "*"]
+    op = list(permutations(op, 3))
+    result = []
+    for i in op:
+        result.append(calculate(expression, i))
+    return max(result)
+
+print(solution("100-200*300-500+20"))
