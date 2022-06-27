@@ -19,6 +19,25 @@ def solution(prices):
 
     return answer
 
+# 나중에 다시 풀어본 내 풀이
+def solution(prices):
+    n = len(prices)
+    answer = [0] * n
+    stack = []
+
+    for i, price in enumerate(prices):
+        while stack and stack[-1][1] > price:
+            temp = stack.pop()
+            answer[temp[0]] = i - temp[0]
+
+        stack.append((i, price))
+
+    while stack:
+        temp = stack.pop()
+        answer[temp[0]] = n - temp[0] - 1
+
+    return answer
+
 
 # 다른 사람 풀이 - 효율성 테스트 92.32ms ~ 195.17ms
 # 제일 간단한 풀이

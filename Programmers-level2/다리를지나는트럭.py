@@ -21,6 +21,36 @@ def solution(bridge_length, weight, truck_weights):
 
     return answer
 
+# 다시 풀어본 나의 풀이 - 효율 너무 낮다 732ms
+# 예전 풀이보다 안 좋아짐...
+from collections import deque
+
+def solution(bridge_length, weight, truck_weights):
+    answer = 0
+    limit = truck_weights[0]
+    end = len(truck_weights)
+    k = 1  # k는 truct_weights의 인덱스로 사용
+    queue = deque()
+    queue.append([truck_weights[0], 0])
+
+    while queue:
+        error_pre = 0
+        for i in range(len(queue)):
+            queue[i - error_pre][1] += 1
+            if queue[i - error_pre][1] >= bridge_length:
+                temp = queue.popleft()
+                limit -= temp[0]
+                error_pre += 1
+
+        if k < end and limit + truck_weights[k] <= weight:
+            limit += truck_weights[k]
+            queue.append([truck_weights[k], 0])
+            k += 1
+
+        answer += 1
+
+    return answer + 1
+
 # 다른 풀이
 # 속도는 0~46ms
 from collections import deque
